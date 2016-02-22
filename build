@@ -1,0 +1,3 @@
+#!/bin/bash
+
+gcc -g -W -Wextra -Wall -pedantic -o out/driver src/mockedwards.c src/mockbsfn01.c src/driver.c
