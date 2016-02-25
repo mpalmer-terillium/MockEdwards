@@ -1,48 +1,37 @@
 #include "../include/mockbsfn01.h"
 #include "../include/mockedwards.h"
+#include "../include/mockcontext.h"
 
 
-int mockbsfn01_callBSFN(struct DSBSFN01 *lpDS)
+int mockbsfn01_callBSFN(struct mockcontext *ctx, struct DSBSFN01 *lpDS)
 {
     char header[MAXLINE], soapEnv[MAXLINE], response[MAXLINE];
     int status = INIT;
 
-    status = createSoapEnv(lpDS, soapEnv);
+    status = mockbsfn01_createSoapEnv(ctx, lpDS, soapEnv);
     if(status != SUCCESS)
         snprintf(lpDS->szErrorMsg, 101, "%s", ERROR_MSG_SOAP_ENV);
 
-    status = createRequestHeader(header, strlen(soapEnv));
+    status = createRequestHeader(ctx, header, strlen(soapEnv));
     if(status != SUCCESS)
         snprintf(lpDS->szErrorMsg, 101, "%s", ERROR_MSG_REQ_HEAD);
 
-    status = callExternalService(soapEnv, response, header);
+    status = callExternalService(ctx, soapEnv, response, header);
     if(status != SUCCESS)
         snprintf(lpDS->szErrorMsg, 101, "%s", ERROR_MSG_CALL_EXT);
 
-    status = parseXmlGetOutput((char *) "valueAsReturnedOnResponse", response, lpDS);
+    status = mockbsfn01_parseXmlGetOutput((char *) "<appmsg>", response, lpDS);
     if(status != SUCCESS)
         snprintf(lpDS->szErrorMsg, 101, "%s", ERROR_MSG_PRS_RESP);
 
     return status;
 }
 
-int createRequestHeader(char * header, int contentLength) {
+int mockbsfn01_createSoapEnv(struct mockcontext *ctx, struct DSBSFN01 *lpDS, char * soapEnv) {
 
-    header[0] = '\0';
-    sprintf(header, "POST /PayTrace/IntegrationPort HTTP/1.1\r\n");
-    sprintf(header, "%sAccept-Encoding: gzip,deflate\r\n", header);
-    sprintf(header, "%sContent-Type: text/xml;charset=UTF-8\r\n", header);
-    sprintf(header, "%sSOAPAction: \"\"\r\n", header);
-    sprintf(header, "%sContent-Length: %d\r\n", header, contentLength);
-    sprintf(header, "%sHost: 192.168.1.105:7101\r\n", header);
-    sprintf(header, "%sConnection: Keep-Alive\r\n", header);
-    sprintf(header, "%sUser-Agent: Apache-HttpClient/4.1.1 (java 1.5)\r\n", header);
-    sprintf(header, "%s\r\n", header);
-
-    return SUCCESS;
-}
-
-int createSoapEnv(struct DSBSFN01 *lpDS, char * soapEnv) {
+    /* Here also use the context to create the method call - this and the
+       header should be built as dynamically as possible, or at least in a way
+       that mimics the actual edwards calls */
 
     char s0[]  = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n";
     char s1[]  = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ser=\"http://service.integration.paytrace.com.src/\">\r\n";
@@ -52,14 +41,14 @@ int createSoapEnv(struct DSBSFN01 *lpDS, char * soapEnv) {
     char s5[]  = "<externalValueObject>\r\n";
     char s6[100];
     snprintf(s6, sizeof(s6), "%s%s%s", "<amount>", lpDS->szInput, "</amount>\r\n");
-    char s7[]  = "<creditCardNumber></creditCardNumber>\r\n";
-    char s8[]  = "<expirationMonth></expirationMonth>\r\n";
-    char s9[]  = "<expirationYear></expirationYear>\r\n";
-    char s10[] = "<method></method>\r\n";
-    char s11[] = "<parmName></parmName>\r\n";
+    char s7[]  = "<creditCardNumber>4012881888818888</creditCardNumber>\r\n";
+    char s8[]  = "<expirationMonth>12</expirationMonth>\r\n";
+    char s9[]  = "<expirationYear>16</expirationYear>\r\n";
+    char s10[] = "<method>processtranx</method>\r\n";
+    char s11[] = "<parmName>PARMLIST</parmName>\r\n";
     char s12[] = "<password></password>\r\n";
-    char s13[] = "<terms></terms>\r\n";
-    char s14[] = "<transactionType></transactionType>\r\n";
+    char s13[] = "<terms>Y</terms>\r\n";
+    char s14[] = "<transactionType>Authorization</transactionType>\r\n";
     char s15[] = "<username></username>\r\n";
     char s16[] = "</externalValueObject>\r\n";
     char s17[] = "</ser:processExternalRequest>\r\n";
@@ -91,7 +80,7 @@ int createSoapEnv(struct DSBSFN01 *lpDS, char * soapEnv) {
     return SUCCESS;
 }
 
-int parseXmlGetOutput(char * token, char * response, struct DSBSFN01 *lpDS) {
+int mockbsfn01_parseXmlGetOutput(char * token, char * response, struct DSBSFN01 *lpDS) {
 
     /*
         Find token in response.

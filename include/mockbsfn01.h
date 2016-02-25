@@ -1,6 +1,9 @@
 #ifndef MOCKBSFN01
 #define MOCKBSFN01
 
+#include "../include/mockedwards.h"
+#include "../include/mockcontext.h"
+
 #include <stdio.h>
 #include <string.h>
 
@@ -13,9 +16,8 @@ struct DSBSFN01 {
 
 };
 
-int mockbsfn01_callBSFN(struct DSBSFN01 *);
-int createRequestHeader(char * request, int contentLength);
-int createSoapEnv(struct DSBSFN01 *lpDS, char * soapEnv);
-int parseXmlGetOutput(char * token, char * response, struct DSBSFN01 *lpDS);
+int mockbsfn01_callBSFN(struct mockcontext *, struct DSBSFN01 *);
+int mockbsfn01_createSoapEnv(struct mockcontext *, struct DSBSFN01 *, char *);
+int mockbsfn01_parseXmlGetOutput(char *, char *, struct DSBSFN01 *);
 
 #endif

@@ -11,6 +11,7 @@
 #include <netdb.h>
 #include <arpa/inet.h>
 #include "../include/mockbsfn01.h"
+#include "../include/mockcontext.h"
 
 #define INIT                0
 #define SUCCESS             100
@@ -22,7 +23,10 @@
 #define ERROR_MSG_PRS_RESP  "Error parsing response"
 #define MAXLINE             1024
 
+
 void error(const char *, int *);
-int callExternalService(char * request, char * response, char * header);
+int callExternalService(struct mockcontext *, char *, char *, char *);
+struct mockcontext *get_context(const char *, int, const char *, const char *);
+int createRequestHeader(struct mockcontext *, char *, int);
 
 #endif
