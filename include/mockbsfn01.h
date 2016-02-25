@@ -14,5 +14,8 @@ struct DSBSFN01 {
 };
 
 int mockbsfn01_callBSFN(struct DSBSFN01 *);
+int createRequestHeader(char * request, int contentLength);
+int createSoapEnv(struct DSBSFN01 *lpDS, char * soapEnv);
+int parseXmlGetOutput(char * token, char * response, struct DSBSFN01 *lpDS);
 
 #endif
