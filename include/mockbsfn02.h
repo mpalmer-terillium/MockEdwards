@@ -4,9 +4,8 @@
 #include "../include/mockedwards.h"
 #include "../include/mockcontext.h"
 
-#include <stdio.h>
-#include <string.h>
-
+#define OUTPUT_TOKEN_START_DSBSFN02   "<response>"
+#define OUTPUT_TOKEN_END_DSBSFN02     "</response>"
 
 struct DSBSFN02 {
 
@@ -17,7 +16,7 @@ struct DSBSFN02 {
 };
 
 int mockbsfn02_callBSFN(struct mockcontext *, struct DSBSFN02 *);
-int mockbsfn02_createSoapEnv(struct mockcontext *, struct DSBSFN02 *, char *);
-int mockbsfn02_parseXmlGetOutput(char *, char *, struct DSBSFN02 *);
+int mockbsfn02_createSoapEnv(struct DSBSFN02 *, char *);
+int mockbsfn02_parseXmlResponse(char *, char *, char *, struct DSBSFN02 *);
 
 #endif

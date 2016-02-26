@@ -8,6 +8,4 @@ struct mockcontext {
     char serv_endp[100];
 };
 
-
-
 #endif

@@ -11,18 +11,25 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <arpa/inet.h>
+#include <assert.h>
 #include "../include/mockbsfn01.h"
 #include "../include/mockcontext.h"
 
-#define INIT                0
-#define SUCCESS             100
-#define FAIL                -100
-#define ERROR_MSG_GEN       "something went wrong"
-#define ERROR_MSG_SOAP_ENV  "Error creating soapEnv"
-#define ERROR_MSG_REQ_HEAD  "Error creating request header"
-#define ERROR_MSG_CALL_EXT  "Error calling external service"
-#define ERROR_MSG_PRS_RESP  "Error parsing response"
-#define MAXLINE             1024
+#define INIT                    0
+#define SUCCESS                 100
+#define FAIL                    -100
+#define MAXLINE                 1024
+#define ERROR_MSG_GEN           "Something went wrong"
+#define ERROR_MSG_SOAP_ENV      "Error creating soapEnv"
+#define ERROR_MSG_REQ_HEAD      "Error creating request header"
+#define ERROR_MSG_CALL_EXT      "Error calling external service"
+#define ERROR_MSG_PRS_RESP      "Error parsing response"
+#define ERROR_MSG_OP_SCKET      "Error opening socket"
+#define ERROR_MSG_CON_SCKT      "Error connecting to socket"
+#define ERROR_MSG_WRT_HEDR      "Error writing header to socket"
+#define ERROR_MSG_WRT_ENVL      "Error writing soapEnv to socket"
+#define ERROR_MSG_READ_ENV      "Error reading from socket"
+
 
 
 void error(const char *, int *);

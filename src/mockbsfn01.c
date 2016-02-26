@@ -1,6 +1,5 @@
 #include "../include/mockbsfn01.h"
 #include "../include/mockedwards.h"
-#include "../include/mockcontext.h"
 
 
 int mockbsfn01_callBSFN(struct mockcontext *ctx, struct DSBSFN01 *lpDS)
@@ -8,7 +7,7 @@ int mockbsfn01_callBSFN(struct mockcontext *ctx, struct DSBSFN01 *lpDS)
     char header[MAXLINE], soapEnv[MAXLINE], response[MAXLINE];
     int status = INIT;
 
-    status = mockbsfn01_createSoapEnv(ctx, lpDS, soapEnv);
+    status = mockbsfn01_createSoapEnv(lpDS, soapEnv);
     if(status != SUCCESS)
         snprintf(lpDS->szErrorMsg, 101, "%s", ERROR_MSG_SOAP_ENV);
 
@@ -20,14 +19,17 @@ int mockbsfn01_callBSFN(struct mockcontext *ctx, struct DSBSFN01 *lpDS)
     if(status != SUCCESS)
         snprintf(lpDS->szErrorMsg, 101, "%s", ERROR_MSG_CALL_EXT);
 
-    status = mockbsfn01_parseXmlGetOutput((char *) "<appmsg>", response, lpDS);
+    status = mockbsfn01_parseXmlResponse((char *) OUTPUT_TOKEN_START_DSBSFN01,
+                                          (char *) OUTPUT_TOKEN_END_DSBSFN01,
+                                          response,
+                                          lpDS);
     if(status != SUCCESS)
         snprintf(lpDS->szErrorMsg, 101, "%s", ERROR_MSG_PRS_RESP);
 
     return status;
 }
 
-int mockbsfn01_createSoapEnv(struct mockcontext *ctx, struct DSBSFN01 *lpDS, char * soapEnv) {
+int mockbsfn01_createSoapEnv(struct DSBSFN01 *lpDS, char * soapEnv) {
 
     /* Here also use the context to create the method call - this and the
        header should be built as dynamically as possible, or at least in a way
@@ -80,22 +82,14 @@ int mockbsfn01_createSoapEnv(struct mockcontext *ctx, struct DSBSFN01 *lpDS, cha
     return SUCCESS;
 }
 
-int mockbsfn01_parseXmlGetOutput(char * token, char * response, struct DSBSFN01 *lpDS) {
+int mockbsfn01_parseXmlResponse(char *start_token, char *end_token, char *response, struct DSBSFN01 *lpDS) {
 
-    /*
-        Find token in response.
-        might need to have a start token and end token:
-        maybe pass in "result", then look for a start of <result> and
-        an end of </result> and use those two values to get the middle.
-        Everything between the end of the first token and the start of
-        second token.
-    */
+    char *respValue = strstr(response, start_token);
+    char *respEnd = strstr(response, end_token);
+    char *respStart = respValue + strlen(start_token);
+    int len = respEnd - respStart;
 
-    char *respValue = strstr(response, token);
-
-    snprintf(lpDS->szOutput, MAXLINE, "%s", respValue);
-
-    printf("Returned Response: %s\n", response);
+    strncpy(lpDS->szOutput, respStart, len);
 
     return SUCCESS;
 }
