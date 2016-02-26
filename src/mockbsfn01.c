@@ -31,9 +31,10 @@ int mockbsfn01_callBSFN(struct mockcontext *ctx, struct DSBSFN01 *lpDS)
 
 int mockbsfn01_createSoapEnv(struct DSBSFN01 *lpDS, char * soapEnv) {
 
-    /* Here also use the context to create the method call - this and the
-       header should be built as dynamically as possible, or at least in a way
-       that mimics the actual edwards calls */
+    char line_end[] = "\r\n";
+
+    int size_s6 = strlen(OUTPUT_TOKEN_START_DSBSFN01) + strlen(lpDS->szInput) +
+                  strlen(OUTPUT_TOKEN_END_DSBSFN01) + strlen(line_end);
 
     char s0[]  = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n";
     char s1[]  = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ser=\"http://service.integration.paytrace.com.src/\">\r\n";
@@ -41,8 +42,8 @@ int mockbsfn01_createSoapEnv(struct DSBSFN01 *lpDS, char * soapEnv) {
     char s3[]  = "<soapenv:Body>\r\n";
     char s4[]  = "<ser:processExternalRequest>\r\n";
     char s5[]  = "<externalValueObject>\r\n";
-    char s6[100];
-    snprintf(s6, sizeof(s6), "%s%s%s", "<amount>", lpDS->szInput, "</amount>\r\n");
+    char s6[size_s6 + 1];
+    snprintf(s6, sizeof(s6), "%s%s%s%s", OUTPUT_TOKEN_START_DSBSFN01, lpDS->szInput, OUTPUT_TOKEN_END_DSBSFN01, line_end);
     char s7[]  = "<creditCardNumber>4012881888818888</creditCardNumber>\r\n";
     char s8[]  = "<expirationMonth>12</expirationMonth>\r\n";
     char s9[]  = "<expirationYear>16</expirationYear>\r\n";

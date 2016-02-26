@@ -28,14 +28,19 @@ int mockbsfn02_callBSFN(struct mockcontext *ctx, struct DSBSFN02 *lpDS)
 
 int mockbsfn02_createSoapEnv(struct DSBSFN02 *lpDS, char * soapEnv) {
 
+    char line_end[] = "\r\n";
+
+    int size_s6 = strlen(INPUT_TOKEN_START_DSBSFN02) + strlen(lpDS->szInput) +
+                  strlen(INPUT_TOKEN_END_DSBSFN02) + strlen(line_end);
+
     char s0[]  = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n";
     char s1[]  = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ser=\"http://service.optyservice.osc.com/\">\r\n";
     char s2[]  = "<soapenv:Header/>\r\n";
     char s3[]  = "<soapenv:Body>\r\n";
     char s4[]  = "<ser:processOSCIntegrationRequest>\r\n";
     char s5[]  = "<request>\r\n";
-    char s6[100];
-    snprintf(s6, sizeof(s6), "%s%s%s", "<optyName>", lpDS->szInput, "</optyName>\r\n");
+    char s6[size_s6 + 1];
+    snprintf(s6, sizeof(s6), "%s%s%s%s", INPUT_TOKEN_START_DSBSFN02, lpDS->szInput, INPUT_TOKEN_END_DSBSFN02, line_end);
     char s7[]  = "<transactionType>READ</transactionType>\r\n";
     char s8[] = "</request>\r\n";
     char s9[] = "</ser:processOSCIntegrationRequest>\r\n";

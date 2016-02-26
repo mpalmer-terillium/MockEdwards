@@ -4,8 +4,10 @@
 #include "../include/mockedwards.h"
 #include "../include/mockcontext.h"
 
-#define OUTPUT_TOKEN_START_DSBSFN02   "<response>"
-#define OUTPUT_TOKEN_END_DSBSFN02     "</response>"
+#define INPUT_TOKEN_START_DSBSFN02      "<optyName>"
+#define INPUT_TOKEN_END_DSBSFN02        "</optyName>"
+#define OUTPUT_TOKEN_START_DSBSFN02     "<response>"
+#define OUTPUT_TOKEN_END_DSBSFN02       "</response>"
 
 struct DSBSFN02 {
 
