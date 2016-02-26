@@ -2,8 +2,8 @@
 #include "../include/mockedwards.h"
 
 
-int mockbsfn01_callBSFN(struct mockcontext *ctx, struct DSBSFN01 *lpDS)
-{
+int mockbsfn01_callBSFN(struct mockcontext *ctx, struct DSBSFN01 *lpDS) {
+
     char header[MAXLINE], soapEnv[MAXLINE], response[MAXLINE];
     int status = INIT;
 
@@ -25,6 +25,8 @@ int mockbsfn01_callBSFN(struct mockcontext *ctx, struct DSBSFN01 *lpDS)
                                           lpDS);
     if(status != SUCCESS)
         snprintf(lpDS->szErrorMsg, 101, "%s", ERROR_MSG_PRS_RESP);
+
+    debug_print("%s\n", response);
 
     return status;
 }
@@ -87,10 +89,13 @@ int mockbsfn01_parseXmlResponse(char *start_token, char *end_token, char *respon
 
     char *respValue = strstr(response, start_token);
     char *respEnd = strstr(response, end_token);
-    char *respStart = respValue + strlen(start_token);
-    int len = respEnd - respStart;
+    char *start = respValue + strlen(start_token);
+    int len = respEnd - start;
 
-    strncpy(lpDS->szOutput, respStart, len);
-
-    return SUCCESS;
+    if(len > 0) {
+        strncpy(lpDS->szOutput, start, len);
+        return SUCCESS;
+    } else {
+        return FAIL;
+    }
 }

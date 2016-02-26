@@ -1,5 +1,6 @@
 #include "../include/mockedwards.h"
 
+
 void error(const char *msg, int *status) {
     *status = FAIL;
     perror(msg);
@@ -38,8 +39,8 @@ int callExternalService(struct mockcontext *ctx, char *soapEnv, char *response, 
     contentLength = strlen(soapEnv);
     headerLength = strlen(header);
 
-    // printf("HEADER: %s\n", header);
-    // printf("SOAPEnv: %s\n", soapEnv);
+    debug_print("HEADER: %s\n", header);
+    debug_print("SOAPEnv: %s\n", soapEnv);
 
     n = connect(sockfd, (struct sockaddr *) &serv_addr, addr_size);
     if(n < 0) {

@@ -1,3 +1,10 @@
 #!/bin/bash
 
-gcc -std=c99 -g -W -Wextra -Wall -pedantic -o out/driver src/mockedwards.c src/mockbsfn01.c src/mockbsfn02.c src/driver.c
+if [ "$1" == "debug" ]; then
+    echo ""
+    echo "MockEdwards: Debugging turned on:"
+    echo ""
+    gcc  -DDEBUG -std=c99 -g -W -Wextra -Wall -pedantic -O3 -o out/driver src/mockedwards.c src/mockbsfn01.c src/mockbsfn02.c src/driver.c
+else
+    gcc -std=c99 -g -W -Wextra -Wall -pedantic -O3 -o out/driver src/mockedwards.c src/mockbsfn01.c src/mockbsfn02.c src/driver.c
+fi

@@ -30,7 +30,14 @@
 #define ERROR_MSG_WRT_ENVL      "Error writing soapEnv to socket"
 #define ERROR_MSG_READ_ENV      "Error reading from socket"
 
+#ifdef DEBUG
+#define DEBUG_TEST 1
+#else
+#define DEBUG_TEST 0
+#endif
 
+#define debug_print(fmt, ...) \
+            do { if(DEBUG_TEST) fprintf(stderr, fmt, __VA_ARGS__); } while (0)
 
 void error(const char *, int *);
 int callExternalService(struct mockcontext *, char *, char *, char *);
