@@ -6,6 +6,8 @@
 
 #define OUTPUT_TOKEN_START_DSBSFN01     "<appmsg>"
 #define OUTPUT_TOKEN_END_DSBSFN01       "</appmsg>"
+#define INPUT_TOKEN_START_DSBSFN01      "<amount>"
+#define INPUT_TOKEN_END_DSBSFN01        "</amount>"
 
 struct DSBSFN01 {
 

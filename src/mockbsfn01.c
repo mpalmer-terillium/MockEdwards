@@ -35,8 +35,8 @@ int mockbsfn01_createSoapEnv(struct DSBSFN01 *lpDS, char * soapEnv) {
 
     char line_end[] = "\r\n";
 
-    int size_s6 = strlen(OUTPUT_TOKEN_START_DSBSFN01) + strlen(lpDS->szInput) +
-                  strlen(OUTPUT_TOKEN_END_DSBSFN01) + strlen(line_end);
+    int size_s6 = strlen(INPUT_TOKEN_START_DSBSFN01) + strlen(lpDS->szInput) +
+                  strlen(INPUT_TOKEN_END_DSBSFN01) + strlen(line_end);
 
     char s0[]  = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n";
     char s1[]  = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ser=\"http://service.integration.paytrace.com.src/\">\r\n";
@@ -45,7 +45,7 @@ int mockbsfn01_createSoapEnv(struct DSBSFN01 *lpDS, char * soapEnv) {
     char s4[]  = "<ser:processExternalRequest>\r\n";
     char s5[]  = "<externalValueObject>\r\n";
     char s6[size_s6 + 1];
-    snprintf(s6, sizeof(s6), "%s%s%s%s", OUTPUT_TOKEN_START_DSBSFN01, lpDS->szInput, OUTPUT_TOKEN_END_DSBSFN01, line_end);
+    snprintf(s6, sizeof(s6), "%s%s%s%s", INPUT_TOKEN_START_DSBSFN01, lpDS->szInput, INPUT_TOKEN_END_DSBSFN01, line_end);
     char s7[]  = "<creditCardNumber>4012881888818888</creditCardNumber>\r\n";
     char s8[]  = "<expirationMonth>12</expirationMonth>\r\n";
     char s9[]  = "<expirationYear>16</expirationYear>\r\n";
