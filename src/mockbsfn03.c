@@ -42,9 +42,10 @@ int mockbsfn03_createSoapEnv(struct DSBSFN03 *lpDS, char * soapEnv) {
     char s4[]  = "<ser:addNewMessage>\r\n";
     char s5[size_s6 + 1];
     snprintf(s5, sizeof(s5), "%s%s%s%s", INPUT_TOKEN_START_DSBSFN03, lpDS->szInput, INPUT_TOKEN_END_DSBSFN03, line_end);
-    char s6[] = "</ser:addNewMessage>\r\n";
-    char s7[] = "</soapenv:Body>\n";
-    char s8[] = "</soapenv:Envelope>\n";
+    char s6[] = "<messageType>PayTrace</messageType>\r\n";
+    char s7[] = "</ser:addNewMessage>\r\n";
+    char s8[] = "</soapenv:Body>\n";
+    char s9[] = "</soapenv:Envelope>\n";
 
     soapEnv[0] = '\0';
 //    strcat(soapEnv, s0);
@@ -56,6 +57,7 @@ int mockbsfn03_createSoapEnv(struct DSBSFN03 *lpDS, char * soapEnv) {
     strcat(soapEnv, s6);
     strcat(soapEnv, s7);
     strcat(soapEnv, s8);
+    strcat(soapEnv, s9);
 
     return SUCCESS;
 }
