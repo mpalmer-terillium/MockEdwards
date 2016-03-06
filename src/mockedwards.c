@@ -39,29 +39,28 @@ int callExternalService(struct mockcontext *ctx, char *soapEnv, char *response, 
     contentLength = strlen(soapEnv);
     headerLength = strlen(header);
 
-    debug_print("HEADER: %s\n", header);
-    debug_print("SOAPEnv: %s\n", soapEnv);
+    debug_print("HEADER: %s\n\n", header);
+    debug_print("SOAPEnv: %s\n\n", soapEnv);
 
-    n = connect(sockfd, (struct sockaddr *) &serv_addr, addr_size);
-    if(n < 0) {
+    if(connect(sockfd, (struct sockaddr *) &serv_addr, addr_size) < 0) {
         error(ERROR_MSG_CON_SCKT, &status);
         return status;
     }
 
-    n = write(sockfd, header, headerLength);
-    if(n < 0) {
+    if(write(sockfd, header, headerLength) < 0) {
         error(ERROR_MSG_WRT_HEDR, &status);
         return status;
     }
 
-    n = write(sockfd, soapEnv, contentLength);
-    if(n < 0) {
+    if(write(sockfd, soapEnv, contentLength) < 0) {
         error(ERROR_MSG_WRT_ENVL, &status);
         return status;
     }
 
     bzero(response, MAXLINE);
-    n = read(sockfd, response, MAXLINE - 1);
+    while((n = read(sockfd, response, MAXLINE - 1)) > 0) {
+        ;
+    }
     if(n < 0) {
         error(ERROR_MSG_READ_ENV, &status);
         return status;
